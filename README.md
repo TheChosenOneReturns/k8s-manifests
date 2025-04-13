@@ -1,57 +1,79 @@
-# k8s-manifests
-📄 README - Despliegue Web Estático con Minikube y Kubernetes
-Este proyecto permite desplegar una web estática usando Minikube y Kubernetes. El sitio está almacenado localmente y se monta en el contenedor NGINX mediante un volumen persistente.
+# 🌐 Despliegue Web Estático con Kubernetes + Minikube (Windows)
 
-🗂 Estructura del proyecto
-Directorio base: C:\Users\*TU USUARIO*\proyecto-kubernetes
+Este repositorio contiene los manifiestos necesarios para desplegar una página web estática usando Kubernetes sobre Minikube, montando los archivos locales de tu sitio directamente desde Windows.
 
+---
+
+## 📁 Estructura del proyecto
+
+```plaintext
 proyecto-kubernetes/
 ├── k8s-manifests/
 │   ├── deployments/
+│   │   └── web-deployment.yaml
 │   ├── services/
+│   │   └── web-service.yaml
 │   ├── persistent-volumes/
+│   │   ├── pv.yaml
+│   │   └── pvc.yaml
 │   └── ingress/
 │
 ├── web-content/
 │   ├── index.html
 │   ├── style.css
 │   └── assets/
+```
 
-✅ Requisitos
-- Docker
-- Minikube
-- GitBash(RECOMENDABLE), WindowsPowerShell, o la misma terminal de Windows (No lo recomiendo, tiene sus limitaciones)
-- Carpeta con tu sitio estático (web-content) correctamente estructurada
+---
 
-🚀 Instrucciones
-1. Iniciar Minikube con tu sitio montado
-Utilizando BASH:
+## 🧩 Requisitos
 
-minikube start --driver=docker --mount --mount-string="C:\Users\*TU USUARIO*\proyecto-kubernetes\web-content:/mnt/web"
+- 🐳 Docker
+- 🌱 Minikube
+- 💻 Windows 10/11 con GitBash (RECOMENDADO), POWERSHELL, o utilizando incluso cmd (no recomendado) será suficiente.
+- 📁 Carpeta `web-content/` con tu sitio estático
 
-2. Aplicar los manifiestos
-Desde la raíz del proyecto:
+---
 
-Utilizando BASH y siguiendo ESE ORDEN:
+## 🚀 Pasos para desplegar
+
+### 1️⃣ Iniciar Minikube con montaje
+
+```bash
+minikube start --driver=docker --mount --mount-string="C:\Users\arieb\proyecto-kubernetes\web-content:/mnt/web"
+```
+
+---
+
+### 2️⃣ Aplicar manifiestos de Kubernetes
+
+```bash
 kubectl apply -f k8s-manifests/persistent-volumes/pv.yaml
 kubectl apply -f k8s-manifests/persistent-volumes/pvc.yaml
 kubectl apply -f k8s-manifests/deployments/web-deployment.yaml
 kubectl apply -f k8s-manifests/services/web-service.yaml
+```
 
-3. Ver tu sitio en el navegador
+---
 
+### 3️⃣ Abrir la app en el navegador
+
+```bash
 minikube service web-service
+```
 
-📦 Detalles importantes
-El contenedor nginx servirá automáticamente index.html desde /usr/share/nginx/html, gracias al volumen montado desde tu carpeta local.
+---
 
-El CSS y archivos en assets/ también estarán disponibles.
+## 🛠 Troubleshooting
 
-🧯 Problemas comunes
-❌ No carga la página
-➡️ Asegúrate de que el index.html está en web-content/ y que Minikube lo montó correctamente.
+| Problema | Solución |
+|---------|----------|
+| ❌ No se ve el sitio | Verifica que `index.html` está en `web-content/` y que `/mnt/web` se montó correctamente |
+| ❌ Error de imagen | Ejecuta `docker pull nginx:alpine` y `minikube image load nginx:alpine` |
 
-❌ Imagen no se descarga (nginx)
-➡️ Ejecutá en BASH:
-docker pull nginx:alpine
-minikube image load nginx:alpine
+---
+
+## 📸 Resultado Esperado
+
+El contenido de `web-content/` (incluyendo `index.html`, `style.css`, y `/assets`) se sirve automáticamente por NGINX.
+
