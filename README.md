@@ -16,7 +16,7 @@ proyecto-kubernetes/
 │   ├── persistent-volumes/
 │   │   ├── pv.yaml
 │   │   └── pvc.yaml
-│   └── ingress/
+│   
 │
 ├── web-content/
 │   ├── index.html
